@@ -92,7 +92,7 @@ public:
     };
     Q_DECLARE_FLAGS(PeerWireState, PeerWireStateFlag)
 
-    explicit PeerWireClient(const QByteArray &peerId, QObject *parent = 0);
+    explicit PeerWireClient(const QByteArray &peerId, QObject *parent = nullptr);
     void initialize(const QByteArray &infoHash, int pieceCount);
 
     void setPeer(TorrentPeer *peer);
@@ -128,8 +128,9 @@ public:
 
     void setReadBufferSize(qint64 size) override;
 
-    void connectToHost(const QHostAddress &address,
-                       quint16 port, OpenMode openMode = ReadWrite) override;
+    using QTcpSocket::connectToHost;
+    void connectToHost(const QString &address, quint16 port, OpenMode openMode = ReadWrite,
+                       NetworkLayerProtocol protocol = AnyIPProtocol) override;
     void diconnectFromHost();
 
 signals:
